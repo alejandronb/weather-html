@@ -1,12 +1,15 @@
 #coding: utf-8
 import requests
 import json
+from jinja2 import Template
 
 direccion = "http://api.openweathermap.org/data/2.5/weather?" #q=London,uk
 ciudades = {"1":"Almería","2":"Cádiz","3":"Córdoba","4":"Granada","5":"Huelva","6":"Jaén","7":"Málaga","8":"Sevilla"}
 
+
+
+
 def cardinalidad(direccion):
-#Fallo en la funcion
 	"Función que transforma los grados en cardinalidades"
 	for degree in str(direccion):
 		if direccion >= 337.5 and direccion < 22.5:
@@ -51,3 +54,14 @@ minima = round(tempmin - 273,1)
 vientokm = round(viento*1.61)
 
 print "La temperatura maxima de %s es %s ºC y la mínima %s ºC y el viento va a %s km/h y su dirección es %s" % (ciudades[consulta],maxima,minima,vientokm,cardinalidad(direccion))
+
+
+html = open('plantilla.html','r')
+f = ''
+
+for linea in html:
+	f += linea
+
+plantilla = Template('.html')
+
+plantilla.render(ciudad=ciudades[consulta],minima = minima)
