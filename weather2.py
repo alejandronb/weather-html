@@ -8,23 +8,23 @@ ciudades = {"1":"Almería","2":"Cádiz","3":"Córdoba","4":"Granada","5":"Huelva
 def cardinalidad(direccion):
 #Fallo en la funcion
 	"Función que transforma los grados en cardinalidades"
-	for grado in str(direccion):
+	for degree in str(direccion):
 		if direccion >= 337.5 and direccion < 22.5:
-			return N
-		if direccion >= 22.5 and direccion < 67.5:
-			return NE
-		if direccion >= 67.5 and direccion < 112.5:
-			return E
-		if direccion >= 112.5 and direccion < 157.5:
-			return SE
-		if direccion >= 157.5 and direccion < 202.5:
-			return S
-		if direccion >= 202.5 and direccion < 247.5:
-			return SO
-		if direccion >= 247.5 and direccion < 292.5:
-			return O
-		if direccion >= 292.5 and direccion < 337.5:
-			return NO
+			return "N"
+		elif direccion >= 22.5 and direccion < 67.5:
+			return "NE"
+		elif direccion >= 67.5 and direccion < 112.5:
+			return "E"
+		elif direccion >= 112.5 and direccion < 157.5:
+			return "SE"
+		elif direccion >= 157.5 and direccion < 202.5:
+			return "S"
+		elif direccion >= 202.5 and direccion < 247.5:
+			return "SO"
+		elif direccion >= 247.5 and direccion < 292.5:
+			return "O"
+		elif direccion >= 292.5 and direccion < 337.5:
+			return "NO"
 
 
 print """1. Almería
