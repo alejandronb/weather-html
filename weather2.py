@@ -2,12 +2,13 @@
 import requests
 import json
 from jinja2 import Template
+import webbrowser
+import os
 
-direccion = "http://api.openweathermap.org/data/2.5/weather?" #q=London,uk
-ciudades = {"1":"Almería","2":"Cádiz","3":"Córdoba","4":"Granada","5":"Huelva","6":"Jaén","7":"Málaga","8":"Sevilla"}
-
-
-
+ciudades = ['Almeria','Cadiz','Cordoba','Granada','Huelva','Jaen','Malaga','Sevilla']
+f = open("plantilla.html","r")
+salida = open("salida.html","w")
+html = ''
 
 def cardinalidad(direccion):
 	"Función que transforma los grados en cardinalidades"
@@ -30,38 +31,34 @@ def cardinalidad(direccion):
 			return "NO"
 
 
-print """1. Almería
-2. Cádiz
-3. Córdoba
-4. Granada
-5. Huelva
-6. Jaén
-7. Málaga
-8. Sevilla"""
+for linea in f:
+	html += linea
 
 
-consulta = raw_input("Introduce el número de la ciudad a consultar: ")
-
-final = "%sq=%s,spain" % (direccion,ciudades[consulta]) #Esto construye la dirección de la API completa
-peticion = requests.get(final)
-json = json.loads(peticion.text)
-tempmax = json["main"]["temp_max"]
-tempmin = json["main"]["temp_min"]
-viento = json["wind"]["speed"]
-direccion = json["wind"]["deg"]
-maxima = round(tempmax - 273,1)
-minima = round(tempmin - 273,1)
-vientokm = round(viento*1.61)
-
-print "La temperatura maxima de %s es %s ºC y la mínima %s ºC y el viento va a %s km/h y su dirección es %s" % (ciudades[consulta],maxima,minima,vientokm,cardinalidad(direccion))
+temp_max = []
+temp_min = []
+viento_km = []
+direccion_viento = []
 
 
-html = open('plantilla.html','r')
-f = ''
+for ciudad in ciudades:
+	peticion = requests.get('http://api.openweathermap.org/data/2.5/weather',params={'q':'%s,spain' % ciudad})
+	dicc = json.loads(peticion.text)
+	tempmax = dicc["main"]["temp_max"]
+	tempmin = dicc["main"]["temp_min"]
+	viento = dicc["wind"]["speed"]
+	direccion = dicc["wind"]["deg"]
+	maxima = round(tempmax - 273,1)
+	minima = round(tempmin - 273,1)
+	vientokm = round(viento*1.61)
+	temp_max.append(maxima)
+	temp_min.append(minima)
+	viento_km.append(vientokm)
+	direccion_viento.append(cardinalidad(direccion))
 
-for linea in html:
-	f += linea
+template = Template(html)
+template = template.render(ciudades=ciudades,maxima=temp_max,minima=temp_min,viento=viento_km,direccion=direccion_viento)
+web.write(template)
+webbrowser.open("salida.html")
 
-plantilla = Template('.html')
 
-plantilla.render(ciudad=ciudades[consulta],minima = minima)

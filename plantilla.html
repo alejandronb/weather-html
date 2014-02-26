@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns ="http://www.w3.org/1999/xhtml"xml:lang="es">
-		<head>
+	<head>
 		<title>El Tiempo en Andalucía</title>
 	</head>
 	<body>
 		<h1>El Tiempo en Andalucía</h1>
+		{% set contador = 0 %}
+		{% for ciudad in ciudades %}
 			<h2>{{ ciudad }}</h2>
 				<ul>
-					<li>Temperatura mínima prevista: {{ minima }}</li>
+					<li>Temperatura mínima prevista: {{ minima[contador] }}</li>
+					<li>Temperatura máxima prevista: {{ maxima[contador] }}</li>
+					<li>Viento: {{ viento[contador] }} Km/h Dirección {{ direccion[contador] }}</li>
 				</ul>
+				{% set contador = contador + 1 %}
+				{% endfor %}
 	</body>
 </html>
