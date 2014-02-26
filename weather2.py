@@ -5,13 +5,13 @@ from jinja2 import Template
 import webbrowser
 import os
 
-ciudades = ['Almeria','Cadiz','Cordoba','Granada','Huelva','Jaen','Malaga','Sevilla']
+ciudades = ['Almeria','Cadiz','Cordoba','Huelva','Jaen','Malaga','Sevilla']
 f = open("plantilla.html","r")
 salida = open("salida.html","w")
 html = ''
 
 def cardinalidad(direccion):
-	"Función que transforma los grados en cardinalidades"
+	"Funcion que transforma los grados en cardinalidades"
 	for degree in str(direccion):
 		if direccion >= 337.5 and direccion < 22.5:
 			return "N"
@@ -44,10 +44,10 @@ direccion_viento = []
 for ciudad in ciudades:
 	peticion = requests.get('http://api.openweathermap.org/data/2.5/weather',params={'q':'%s,spain' % ciudad})
 	dicc = json.loads(peticion.text)
-	tempmax = dicc["main"]["temp_max"]
-	tempmin = dicc["main"]["temp_min"]
 	viento = dicc["wind"]["speed"]
 	direccion = dicc["wind"]["deg"]
+	tempmax = dicc["main"]["temp_max"]
+	tempmin = dicc['main']["temp_min"]
 	maxima = round(tempmax - 273,1)
 	minima = round(tempmin - 273,1)
 	vientokm = round(viento*1.61)
@@ -56,9 +56,10 @@ for ciudad in ciudades:
 	viento_km.append(vientokm)
 	direccion_viento.append(cardinalidad(direccion))
 
+
 template = Template(html)
 template = template.render(ciudades=ciudades,maxima=temp_max,minima=temp_min,viento=viento_km,direccion=direccion_viento)
-web.write(template)
+salida.write(template)
 webbrowser.open("salida.html")
 
 
